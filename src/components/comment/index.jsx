@@ -1,6 +1,7 @@
 import { useContext, useState } from "react"
 import { useTime } from "../../hooks/useTime"
 import { globalStore } from "../../App"
+import { saveLocally } from "../../../utils/helpers"
 
 import Super from "./Super"
 import Weak from "./Weak"
@@ -8,7 +9,6 @@ import Reply from "../reply"
 
 // import { sortReplies } from "../../../utils/helpers"
 import s from './comment.module.css'
-import { saveLocally } from "../../../utils/helpers"
 
 function Comment(props) {
   const { loggedInUser, comments } = useContext(globalStore)

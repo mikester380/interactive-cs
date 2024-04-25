@@ -1,9 +1,9 @@
 import { useContext, useState, useRef } from "react"
 import { globalStore } from "../../App"
+import { saveLocally } from "../../../utils/helpers"
 
 import Poster from "../poster"
 import Modal from "../modal"
-import { saveLocally } from "../../../utils/helpers"
 
 function Super(props) {
   const { comments, setComments } = useContext(globalStore)
