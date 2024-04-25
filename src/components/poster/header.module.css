@@ -1,0 +1,43 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+}
+
+.username {
+  font-weight: 500;
+  color: #334253;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.tag {
+  padding: 1px 6px 3px 6px;
+  border-radius: 2px;
+  background-color: #5357B6;
+  color: #fff;
+}
+
+.created {
+  color: #67727E;
+}
+
+.actions {
+  display: none;
+  margin-left: auto;
+}
+
+@media (min-width: 768px) {
+  .actions {
+    display: flex;
+    gap: 24px;
+  }
+}

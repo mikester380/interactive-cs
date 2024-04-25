@@ -1,0 +1,22 @@
+.poster {
+  padding: 16px;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.column:nth-child(1) {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .column:nth-child(1) {
+    display: revert;
+  }
+
+  .poster {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    padding: 24px;
+  }
+}

@@ -1,0 +1,29 @@
+.modal {
+  background-color: #fff;
+  max-width: 400px;
+  padding: 32px;
+  border-radius: 8px;
+}
+
+.title {
+  font-size: 24px;
+  color: #334253;
+}
+
+.caution {
+  margin-top: 20px;
+  line-height: 1.5;
+  color: #67727E;
+}
+
+.footer {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.action {
+  width: 0;
+  flex-grow: 1;
+}

@@ -1,0 +1,21 @@
+.comment {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.replies {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 2px solid #E9EBF0;
+}
+
+@media (min-width: 768px) {
+  .replies {
+    margin-left: 30px;
+    padding-left: 30px;
+  }
+}

@@ -1,0 +1,16 @@
+.content {
+  color: #67727E;
+  line-height: 1.5;
+  padding: 16px 0;
+}
+
+.to {
+  font-weight: 700;
+  color: #5357B6;
+}
+
+@media (min-width: 768px) {
+  .content {
+    padding-bottom: 0;
+  }
+}
