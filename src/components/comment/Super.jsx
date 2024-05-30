@@ -1,36 +1,32 @@
 import { useContext, useState, useRef } from "react"
-import { globalStore } from "../../App"
-import { saveLocally } from "../../../utils/helpers"
+import { ctx as global } from "../../context/global"
 
 import Poster from "../poster"
 import Modal from "../modal"
 
 function Super(props) {
-  const { comments, setComments } = useContext(globalStore)
-  const [ showEditForm, setShowEditForm ] = useState(false)
-  const [ showModal, setShowModal ] = useState(false)
+  const { comments, setComments } = useContext(global)
+  const [showEditForm, setShowEditForm] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const formRef = useRef()
 
-  function controlEdit(event) {
-    event.preventDefault()
+  function controlEdit(e) {
+    e.preventDefault()
 
-    const target = comments.find(comment => comment.id === props.id)
-    target.content = formRef.current.value
+    const { current } = formRef
+    comments.find((c) => c.id === props.id).content = current.value
 
-    saveLocally('comments', [...comments])
     setComments([...comments])
     setShowEditForm(false)
   }
 
   function controlDelete() {
-    //find the comment
-    const target = comments.find(comment => comment.id === props.id)
-
-    //delete the comment
-    const current = [...comments.filter(comment => comment !== target)]
-
-    saveLocally('comments', current)
-    setComments(current)
+    setComments([
+      ...comments.filter(
+        (comment) =>
+          comment !== comments.find((comment) => comment.id === props.id)
+      ),
+    ])
   }
 
   return (
@@ -50,7 +46,12 @@ function Super(props) {
         controlUnscore={props.controlUnscore}
         formRef={formRef}
       />
-      { showModal && <Modal closeModal={() => setShowModal(false)} controlDelete={controlDelete} /> }
+      {showModal && (
+        <Modal
+          closeModal={() => setShowModal(false)}
+          controlDelete={controlDelete}
+        />
+      )}
     </>
   )
 }

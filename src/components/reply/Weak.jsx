@@ -1,40 +1,40 @@
 import { useContext, useRef, useState } from "react"
-import { globalStore } from "../../App"
-import { getnextid, removeUsername, saveLocally } from "../../../utils/helpers"
+
+import { ctx as global } from "../../context/global"
+import { ID, removeUsername } from "../../../utils/helpers"
 
 import PosterAndForm from "../posterandform"
 
 function Weak(props) {
-  const { comments, setComments, loggedInUser } = useContext(globalStore)
-  const [ showReplyForm, setShowReplyForm ] = useState(false)
+  const { comments, setComments, currentUser } = useContext(global)
+  const [showReplyForm, setShowReplyForm] = useState(false)
   const formRef = useRef()
 
-  function controlReply(event) {
-    event.preventDefault()
+  function controlReply(e) {
+    e.preventDefault()
+    const { current } = formRef
 
-    if (!formRef.current.value) return
+    if (!current.value) {
+      return
+    }
 
-    const target = comments.find(comment => comment.id === props.hostId)
+    const target = comments.find((comment) => comment.id === props.hostId)
 
     const reply = {
-      content: removeUsername(formRef.current.value),
+      content: removeUsername(current.value),
       createdAt: Date.now(),
       score: 0,
-      id: getnextid(comments),
+      id: ID(comments),
       replyingTo: props.user.username,
-      user: loggedInUser
+      user: currentUser,
     }
 
     target.replies.push(reply)
 
-    const current = [...comments]
-
-    saveLocally('comments', current)
-
-    setComments(current)
+    setComments([...comments])
     setShowReplyForm(false)
   }
-  
+
   return (
     <PosterAndForm
       created={props.createdAt}

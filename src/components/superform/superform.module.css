@@ -29,7 +29,7 @@
   resize: none;
   outline: none;
   height: 96px;
-  border: 1px solid #E9EBF0;
+  border: 1px solid #e9ebf0;
   border-radius: 8px;
   padding: 12px 24px;
   font-family: inherit;
@@ -37,7 +37,7 @@
 }
 
 .form_input:focus {
-  outline: 1.4px solid #5357B6;
+  outline: 1.4px solid #5357b6;
 }
 
 .form_footer {
@@ -49,7 +49,7 @@
   .form {
     padding: 24px;
   }
-  
+
   .form_main {
     margin-bottom: 0;
   }

@@ -1,36 +1,34 @@
 import { useRef, useContext, useState } from "react"
-import { globalStore } from "../../App"
-import { getnextid, removeUsername, saveLocally } from "../../../utils/helpers"
+import { ctx as global } from "../../context/global/index"
+import { ID, removeUsername } from "../../../utils/helpers"
 
 import PosterAndForm from "../posterandform"
 
 function Weak(props) {
-  const { comments, setComments, loggedInUser } = useContext(globalStore)
-  const [ showReplyForm, setShowReplyForm ] = useState(false)
-  const formInputRef = useRef()
+  const { comments, setComments, currentUser } = useContext(global)
+  const [showReplyForm, setShowReplyForm] = useState(false)
+  const formRef = useRef()
 
-  function controlReply(event) {
-    event.preventDefault()
+  function controlReply(e) {
+    e.preventDefault()
+    const { current } = formRef
 
-    if (!formInputRef.current.value) return
-
-    const target = comments.find(comment => comment.id === props.id)
-
-    const reply = {
-      content: removeUsername(formInputRef.current.value),
-      createdAt: Date.now(),
-      score: 0,
-      id: getnextid(comments),
-      replyingTo: props.user.username,
-      user: loggedInUser
+    if (!current.value) {
+      return
     }
 
-    target.replies.push(reply)
+    const reply = {
+      content: removeUsername(current.value),
+      createdAt: Date.now(),
+      score: 0,
+      id: ID(comments),
+      replyingTo: props.user.username,
+      user: currentUser,
+    }
 
-    const current = [...comments]
+    comments.find((comment) => comment.id === props.id).replies.push(reply)
 
-    saveLocally('comments', current)
-    setComments(current)
+    setComments([...comments])
     setShowReplyForm(false)
   }
 
@@ -42,7 +40,7 @@ function Weak(props) {
       image={props.user.image.png}
       score={props.score}
       formHandler={controlReply}
-      valueRef={formInputRef}
+      valueRef={formRef}
       controlScore={props.controlScore}
       controlUnscore={props.controlUnscore}
       showReplyForm={showReplyForm}

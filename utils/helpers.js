@@ -1,18 +1,23 @@
-import { SECS_PER_MINUTE, SECS_PER_HOUR, SECS_PER_DAY, SECS_PER_WEEK, SECS_PER_MONTH, SECS_PER_YEAR } from "./constants"
+import {
+  SECS_PER_MINUTE,
+  SECS_PER_HOUR,
+  SECS_PER_DAY,
+  SECS_PER_WEEK,
+  SECS_PER_MONTH,
+  SECS_PER_YEAR,
+} from "./constants"
 
+export function ID(comments) {
+  if (!comments.length) return 1
 
-export function getnextid(comments) {
-  if (!comments.length) return 0
+  let [{ id, replies }] = comments.slice(-1)
 
-  const pc = comments[comments.length - 1]
-  const hasReplies = pc.replies.length > 0
-
-  if (hasReplies) {
-    const pr = pc.replies[pc.replies.length - 1]
-    return pr.id + 1
+  if (replies.length) {
+    let [{ id }] = replies.slice(-1)
+    return ++id
   }
 
-  return pc.id + 1
+  return ++id
 }
 
 export function humanReadableTime(then) {
@@ -22,33 +27,28 @@ export function humanReadableTime(then) {
 
   if (secondsPassed / SECS_PER_YEAR >= 1) {
     const value = Math.floor(secondsPassed / SECS_PER_YEAR)
-    return getString(value, 'year')
-
+    return getString(value, "year")
   } else if (secondsPassed / SECS_PER_MONTH >= 1) {
     const value = Math.floor(secondsPassed / SECS_PER_MONTH)
-    return getString(value, 'month')
-
+    return getString(value, "month")
   } else if (secondsPassed / SECS_PER_WEEK >= 1) {
     const value = Math.floor(secondsPassed / SECS_PER_WEEK)
-    return getString(value, 'week')
-
+    return getString(value, "week")
   } else if (secondsPassed / SECS_PER_DAY >= 1) {
     const value = Math.floor(secondsPassed / SECS_PER_DAY)
-    return getString(value, 'day')
-
+    return getString(value, "day")
   } else if (secondsPassed / SECS_PER_HOUR >= 1) {
     const value = Math.floor(secondsPassed / SECS_PER_HOUR)
-    return getString(value, 'hour')
-
+    return getString(value, "hour")
   } else {
     const value = Math.floor(secondsPassed / SECS_PER_MINUTE)
-    return getString(value, 'min')
+    return getString(value, "min")
   }
 }
 
 export function sortComments(comments) {
   //sort comments according to their scores
-  return [...comments].sort(function (a, b){
+  return Array.from(comments).sort(function (a, b) {
     if (a.score > b.score) return -1
     if (a.score < b.score) return 1
 
@@ -57,33 +57,18 @@ export function sortComments(comments) {
   })
 }
 
-// export function sortReplies(replies) {
-//   // sort the replies according to the time they were created in ascending order
-//   return replies.sort(function(a, b){
-//     if (a.createdAt < b.createdAt) return 1
-//     if (a.createdAt > b.createdAt) return -1
+export const storage = {
+  get(name) {
+    const res = localStorage.getItem(name)
+    return res ? JSON.parse(res) : null
+  },
 
-//     return 0
-//   })
-// }
-
-export function saveLocally(alias, value) {
-  localStorage.setItem(
-    alias,
-    JSON.stringify(value)
-  )
-}
-
-export function getLocallySaved(alias) {
-  const item = localStorage.getItem(alias)
-
-  //if item isn't null, return the parsed item
-  if (item) return JSON.parse(item)
-
-  //else return null which is the value returned by local storage for items that don't exist
-  return item
+  set(name, value) {
+    const str = JSON.stringify(value)
+    localStorage.setItem(name, str)
+  },
 }
 
 export function removeUsername(text) {
-  return text.split(' ').slice(1).join(' ')
+  return text.split(" ").slice(1).join(" ")
 }

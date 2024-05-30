@@ -1,18 +1,22 @@
-import { useContext } from 'react'
-import { globalStore } from '../../App'
+import { useContext } from "react"
 
-import Comment from '../comment'
+import { ctx as global } from "../../context/global"
+import { sortComments } from "../../../utils/helpers"
 
-import { sortComments } from '../../../utils/helpers'
-
-import s from './comments.module.css'
+import Comment from "../comment"
+import s from "./comments.module.css"
 
 function Comments() {
-  const { comments } = useContext(globalStore)
+  const { comments } = useContext(global)
 
   return (
     <div className={s.comments}>
-      { sortComments(comments).map(comment => <Comment key={comment.id} comment={comment} />) }
+      {sortComments(comments).map((comment) => (
+        <Comment
+          key={comment.id}
+          comment={comment}
+        />
+      ))}
     </div>
   )
 }

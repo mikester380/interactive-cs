@@ -1,48 +1,44 @@
 import { useContext, useRef, useState } from "react"
-import { globalStore } from "../../App"
-import { removeUsername, saveLocally } from "../../../utils/helpers"
+
+import { ctx as global } from "../../context/global"
+import { removeUsername } from "../../../utils/helpers"
 
 import Poster from "../poster"
 import Modal from "../modal"
 
 function Super(props) {
-  const { comments, setComments } = useContext(globalStore)
-  const [ showEditForm, setShowEditForm ] = useState(false)
-  const [ showModal, setShowModal ] = useState(false)
+  const { comments, setComments } = useContext(global)
+  const [showEditForm, setShowEditForm] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const formRef = useRef()
 
-  function controlEdit(event) {
-    event.preventDefault()
+  function controlEdit(e) {
+    e.preventDefault()
 
-    const host = comments.find(comment => comment.id === props.hostId)
-    const target = host.replies.find(reply => reply.id === props.id)
+    const { current } = formRef
 
-    //cut out the user's name before updating the reply
-    target.content = removeUsername(formRef.current.value)
+    const host = comments.find((comment) => comment.id === props.hostId)
+    const target = host.replies.find((reply) => reply.id === props.id)
 
-    const current = [...comments]
+    //cut out the username before updating the reply
+    target.content = removeUsername(current.value)
 
-    saveLocally('comments', current)
-    setComments(current)
-
+    setComments([...comments])
     setShowEditForm(false)
   }
 
   function controlDelete() {
-    const host = comments.find(comment => comment.id === props.hostId)
-    const target = host.replies.find(reply => reply.id === props.id)
+    const host = comments.find((comment) => comment.id === props.hostId)
+    const target = host.replies.find((reply) => reply.id === props.id)
 
-    host.replies = host.replies.filter(reply => reply !== target)
+    host.replies = host.replies.filter((reply) => reply !== target)
 
-    const current = [...comments]
-    
-    saveLocally('comments', current)
-    setComments(current)
+    setComments([...comments])
   }
 
   return (
     <>
-      <Poster 
+      <Poster
         content={props.content}
         created={props.createdAt}
         score={props.score}
@@ -58,7 +54,12 @@ function Super(props) {
         formRef={formRef}
         controlEdit={controlEdit}
       />
-      { showModal && <Modal closeModal={() => setShowModal(false)} controlDelete={controlDelete} />}
+      {showModal && (
+        <Modal
+          closeModal={() => setShowModal(false)}
+          controlDelete={controlDelete}
+        />
+      )}
     </>
   )
 }
